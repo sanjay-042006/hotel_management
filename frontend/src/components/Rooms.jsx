@@ -54,7 +54,7 @@ const Rooms = () => {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/rooms');
+        const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/rooms`);
         setRooms(res.data);
       } catch (err) {
         console.log("Backend not running, using mock data for rooms");

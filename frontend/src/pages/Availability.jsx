@@ -18,7 +18,7 @@ const Availability = () => {
     if (!checkIn || !checkOut) return;
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:5000/api/availability', { check_in: checkIn, check_out: checkOut, room_type: roomType });
+      const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/availability`, { check_in: checkIn, check_out: checkOut, room_type: roomType });
       setAvailability(res.data);
     } catch (err) {
       console.log('Backend not running, using mock availability');

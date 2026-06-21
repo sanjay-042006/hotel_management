@@ -35,7 +35,7 @@ const Reviews = () => {
 
   const fetchReviews = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/reviews');
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/reviews`);
       setReviews(res.data);
     } catch (err) {
       console.log("Backend not running or error fetching reviews, using mock data");
@@ -49,7 +49,7 @@ const Reviews = () => {
 
   const handleSubmitReview = async () => {
     try {
-      await axios.post('http://localhost:5000/api/reviews', {
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/reviews`, {
         name: newName,
         rating: newRating,
         text: newText

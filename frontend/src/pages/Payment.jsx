@@ -20,7 +20,7 @@ const Payment = () => {
     // Simulate payment processing delay
     setTimeout(async () => {
       try {
-        await axios.post('http://localhost:5000/api/bookings', {
+        await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bookings`, {
           room_type: bookingData.roomName,
           check_in: bookingData.checkIn,
           check_out: bookingData.checkOut,
