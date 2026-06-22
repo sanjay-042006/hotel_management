@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Star } from 'lucide-react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Reviews = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const MOCK_REVIEWS = [
     {
       id: 1,
@@ -29,7 +33,6 @@ const Reviews = () => {
 
   const [reviews, setReviews] = useState([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [newName, setNewName] = useState('');
   const [newRating, setNewRating] = useState(5);
   const [newText, setNewText] = useState('');
 
@@ -48,20 +51,24 @@ const Reviews = () => {
   }, []);
 
   const handleSubmitReview = async () => {
+    if (!user) {
+      alert("Please log in to submit a review.");
+      navigate('/login');
+      return;
+    }
     try {
       await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/reviews`, {
-        name: newName,
+        name: user.username,
         rating: newRating,
         text: newText
       });
-      setNewName('');
       setNewRating(5);
       setNewText('');
       setIsFormOpen(false);
       fetchReviews();
     } catch (err) {
       console.error("Error submitting review", err);
-      alert("Failed to submit review.");
+      alert("Failed to submit review. Make sure you are logged in.");
     }
   };
 
@@ -71,16 +78,27 @@ const Reviews = () => {
         <div className="section-title">
           <div className="section-subtitle">Guest Reviews</div>
           <h2>What Our Guests Say</h2>
-          <button className="btn btn-primary" style={{ marginTop: '20px' }} onClick={() => setIsFormOpen(!isFormOpen)}>
-            {isFormOpen ? 'Cancel' : 'Write a Review'}
-          </button>
+          {user ? (
+            <button className="btn btn-primary" style={{ marginTop: '20px' }} onClick={() => setIsFormOpen(!isFormOpen)}>
+              {isFormOpen ? 'Cancel' : 'Write a Review'}
+            </button>
+          ) : (
+            <div style={{ marginTop: '20px' }}>
+              <p style={{ fontSize: '15px', color: 'var(--text-light)', marginBottom: '8px' }}>Please log in to submit a review.</p>
+              <button className="btn btn-primary" onClick={() => navigate('/login')}>
+                Log In to Review
+              </button>
+            </div>
+          )}
         </div>
 
-        {isFormOpen && (
+        {isFormOpen && user && (
           <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '8px', marginBottom: '40px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', maxWidth: '600px', margin: '0 auto 40px auto' }}>
             <h3 style={{ marginBottom: '20px', fontFamily: 'Inter' }}>Share Your Experience</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-              <input type="text" placeholder="Your Name" className="form-control" style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} value={newName} onChange={e => setNewName(e.target.value)} />
+              <div style={{ fontSize: '15px', color: 'var(--text-main)', marginBottom: '5px' }}>
+                Posting as: <span style={{ fontWeight: '600', color: 'var(--gold)' }}>{user.username}</span>
+              </div>
               
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <span style={{ fontWeight: '500' }}>Rating:</span>
@@ -100,7 +118,7 @@ const Reviews = () => {
               
               <textarea placeholder="Write your review here..." className="form-control" rows="4" style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px', resize: 'vertical' }} value={newText} onChange={e => setNewText(e.target.value)}></textarea>
               
-              <button className="btn btn-primary" onClick={handleSubmitReview} disabled={!newName || !newText} style={{ alignSelf: 'flex-start', opacity: (!newName || !newText) ? 0.5 : 1 }}>Submit Review</button>
+              <button className="btn btn-primary" onClick={handleSubmitReview} disabled={!newText} style={{ alignSelf: 'flex-start', opacity: !newText ? 0.5 : 1 }}>Submit Review</button>
             </div>
           </div>
         )}

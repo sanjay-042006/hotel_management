@@ -179,11 +179,12 @@ def get_reviews():
     return jsonify(reviews_data), 200
 
 @api_bp.route('/reviews', methods=['POST'])
-def create_review():
+@token_required
+def create_review(current_user):
     data = request.json
     try:
         new_review = Review(
-            name=data.get('name'),
+            name=current_user.username,
             rating=data.get('rating'),
             date_string=datetime.utcnow().strftime("%B %Y"),
             text=data.get('text')
