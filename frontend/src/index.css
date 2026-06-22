@@ -806,6 +806,13 @@ td {
     padding: 60px 0;
   }
   
+  .hero {
+    height: auto;
+    min-height: 600px;
+    padding: 100px 0 60px;
+    align-items: flex-start;
+  }
+  
   .hero h1 {
     font-size: 40px;
   }
@@ -988,7 +995,7 @@ td {
 /* Very Small Devices */
 @media (max-width: 480px) {
   .hero h1 {
-    font-size: 28px;
+    font-size: 26px;
   }
   .about-badge {
     display: none;
