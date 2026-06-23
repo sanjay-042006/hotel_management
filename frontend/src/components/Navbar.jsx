@@ -1,12 +1,18 @@
 import React, { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Do not render navbar on admin routes
+  if (location.pathname.startsWith('/admin')) {
+    return null;
+  }
 
   const handleLogout = () => {
     logout();
@@ -49,11 +55,13 @@ const Navbar = () => {
               <Link to="/booked-rooms" onClick={closeMenu}>My Bookings</Link>
               <span className="user-greeting" style={{ color: 'var(--gold)', fontWeight: 'bold' }}>Hi, {user.username}</span>
               <button onClick={handleLogout} className="btn logout-btn" style={{ background: 'transparent', color: '#fff', border: '1px solid #fff', padding: '5px 10px' }}>Logout</button>
+              <Link to="/admin-login" onClick={closeMenu}>Admin</Link>
             </>
           ) : (
             <>
               <Link to="/login" onClick={closeMenu}>Login</Link>
               <Link to="/register" onClick={closeMenu}>Register</Link>
+              <Link to="/admin-login" onClick={closeMenu}>Admin</Link>
             </>
           )}
           <a href="/#rooms" className="btn btn-gold book-now-btn" onClick={closeMenu}>Book Now</a>

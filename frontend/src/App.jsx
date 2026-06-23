@@ -10,6 +10,8 @@ import BookingFlow from './pages/BookingFlow'
 import Payment from './pages/Payment'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import AdminLogin from './pages/AdminLogin'
+import AdminDashboard from './pages/AdminDashboard'
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/book/:roomId" element={<BookingFlow />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/booked-rooms" element={<BookedRooms />} />
+          <Route path="/admin-login" element={<AdminLogin />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
         </Routes>
         <Footer />
       </Router>

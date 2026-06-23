@@ -3,7 +3,7 @@ import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 def create_database():
-    username = "postgres"
+    username = "nithil"
     password = "nithil"
     host = "localhost"
     port = "5432"
