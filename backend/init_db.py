@@ -78,7 +78,7 @@ def init_database():
 
         # 3. Seed Users (Guest and Admin)
         print("Seeding Admin and Guest users...")
-        hashed_admin_pwd = generate_password_hash("adminpassword", method='pbkdf2:sha256')
+        hashed_admin_pwd = generate_password_hash("123", method='pbkdf2:sha256')
         hashed_guest_pwd = generate_password_hash("password123", method='pbkdf2:sha256')
 
         users = [

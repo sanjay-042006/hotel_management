@@ -53,11 +53,11 @@ const Hero = () => {
             <div className="form-row">
               <div className="form-group">
                 <label>Check-in</label>
-                <input type="date" name="check_in" className="form-control" required onChange={handleChange} />
+                <input type="date" name="check_in" className="form-control" min={new Date().toISOString().split('T')[0]} required onChange={handleChange} />
               </div>
               <div className="form-group">
                 <label>Check-out</label>
-                <input type="date" name="check_out" className="form-control" required onChange={handleChange} />
+                <input type="date" name="check_out" className="form-control" min={formData.check_in || new Date().toISOString().split('T')[0]} required onChange={handleChange} />
               </div>
             </div>
             <div className="form-row">

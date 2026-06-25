@@ -1,3 +1,4 @@
+import os
 from flask import Blueprint, jsonify, request
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
@@ -6,8 +7,7 @@ from functools import wraps
 from models import db, Room, Booking, ContactMessage, User, Review, PhysicalRoom, Waitlist, Amenity, Alert
 
 api_bp = Blueprint('api', __name__)
-SECRET_KEY = 'super-secret-key-atlas'
-
+SECRET_KEY = os.environ.get('SECRET_KEY', 'super-secret-key-atlas')
 # Custom Authentication Decorators
 def token_required(f):
     @wraps(f)
@@ -19,6 +19,8 @@ def token_required(f):
             token = token.split(" ")[1] # Bearer <token>
             data = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
             current_user = User.query.filter_by(id=data['user_id']).first()
+            if not current_user:
+                return jsonify({'message': 'User no longer exists'}), 401
         except Exception as e:
             return jsonify({'message': 'Token is invalid'}), 401
         return f(current_user, *args, **kwargs)
@@ -34,7 +36,9 @@ def admin_required(f):
             token = token.split(" ")[1] # Bearer <token>
             data = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
             current_user = User.query.filter_by(id=data['user_id']).first()
-            if not current_user or current_user.role != 'admin':
+            if not current_user:
+                return jsonify({'message': 'User no longer exists'}), 401
+            if current_user.role != 'admin':
                 return jsonify({'message': 'Admin privilege required'}), 403
         except Exception as e:
             return jsonify({'message': 'Token is invalid'}), 401
@@ -77,6 +81,11 @@ def login():
     
     return jsonify({'token': token, 'username': user.username, 'role': user.role}), 200
 
+def sync_db_statuses():
+    # Admin must process check-ins and check-outs manually.
+    # Auto-transitions break the manual workflow and room assignment.
+    pass
+
 # ----------------- ADMIN AUTH & DASHBOARD -----------------
 
 @api_bp.route('/auth/admin/login', methods=['POST'])
@@ -101,6 +110,7 @@ def admin_login():
 @api_bp.route('/admin/dashboard-stats', methods=['GET'])
 @admin_required
 def get_dashboard_stats(current_admin):
+    sync_db_statuses()
     today_str = datetime.utcnow().strftime("%Y-%m-%d")
     
     # 1. Total rooms and status breakdown
@@ -176,6 +186,7 @@ def get_dashboard_stats(current_admin):
 
 @api_bp.route('/rooms', methods=['GET'])
 def get_rooms():
+    sync_db_statuses()
     # Public route for guest portal (room types)
     rooms = Room.query.all()
     rooms_data = []
@@ -194,6 +205,7 @@ def get_rooms():
 @api_bp.route('/admin/rooms', methods=['GET', 'POST'])
 @admin_required
 def admin_rooms(current_admin):
+    sync_db_statuses()
     if request.method == 'GET':
         physical_rooms = PhysicalRoom.query.all()
         data = []
@@ -373,6 +385,9 @@ def admin_amenity_detail(current_admin, amenity_id):
 @token_required
 def create_booking(current_user):
     data = request.json
+    today_str = datetime.utcnow().strftime("%Y-%m-%d")
+    if data.get('check_in') and data.get('check_in') < today_str:
+        return jsonify({'error': 'Cannot book past dates'}), 400
     try:
         new_booking = Booking(
             user_id=current_user.id,
@@ -447,6 +462,9 @@ def admin_bookings(current_admin):
         
     elif request.method == 'POST':
         body = request.json
+        today_str = datetime.utcnow().strftime("%Y-%m-%d")
+        if body.get('check_in') and body.get('check_in') < today_str:
+            return jsonify({'message': 'Cannot book past dates'}), 400
         # Create booking, possibly for a guest email
         guest_email = body.get('guest_email')
         guest = User.query.filter_by(email=guest_email).first()

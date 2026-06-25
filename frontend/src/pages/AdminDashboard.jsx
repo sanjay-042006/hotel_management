@@ -1919,11 +1919,11 @@ const AdminDashboard = () => {
         <div style={{ display: 'flex', gap: '15px' }}>
           <div style={{ flex: 1 }}>
             <label style={modalLabelStyle}>Check-In Date</label>
-            <input type="date" required value={modalForm.check_in} onChange={(e) => setModalForm({...modalForm, check_in: e.target.value})} style={formInputStyle} />
+            <input type="date" required min={new Date().toISOString().split('T')[0]} value={modalForm.check_in} onChange={(e) => setModalForm({...modalForm, check_in: e.target.value})} style={formInputStyle} />
           </div>
           <div style={{ flex: 1 }}>
             <label style={modalLabelStyle}>Check-Out Date</label>
-            <input type="date" required value={modalForm.check_out} onChange={(e) => setModalForm({...modalForm, check_out: e.target.value})} style={formInputStyle} />
+            <input type="date" required min={modalForm.check_in || new Date().toISOString().split('T')[0]} value={modalForm.check_out} onChange={(e) => setModalForm({...modalForm, check_out: e.target.value})} style={formInputStyle} />
           </div>
         </div>
 

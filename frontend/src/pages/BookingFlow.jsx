@@ -105,11 +105,11 @@ const BookingFlow = () => {
           <div className="form-row">
             <div className="form-group">
               <label>Check-in</label>
-              <input type="date" className="form-control" value={checkIn} onChange={e => handleDateChange('in', e.target.value)} required />
+              <input type="date" className="form-control" min={new Date().toISOString().split('T')[0]} value={checkIn} onChange={e => handleDateChange('in', e.target.value)} required />
             </div>
             <div className="form-group">
               <label>Check-out</label>
-              <input type="date" className="form-control" value={checkOut} onChange={e => handleDateChange('out', e.target.value)} required />
+              <input type="date" className="form-control" min={checkIn || new Date().toISOString().split('T')[0]} value={checkOut} onChange={e => handleDateChange('out', e.target.value)} required />
             </div>
           </div>
           

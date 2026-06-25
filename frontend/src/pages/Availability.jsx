@@ -56,11 +56,11 @@ const Availability = () => {
           <form onSubmit={handleSearch} style={{ display: 'flex', gap: '20px', alignItems: 'flex-end' }}>
             <div className="form-group" style={{ flex: 1, marginBottom: 0 }}>
               <label>Check-in</label>
-              <input type="date" className="form-control" value={checkIn} onChange={e => setCheckIn(e.target.value)} required />
+              <input type="date" className="form-control" min={new Date().toISOString().split('T')[0]} value={checkIn} onChange={e => setCheckIn(e.target.value)} required />
             </div>
             <div className="form-group" style={{ flex: 1, marginBottom: 0 }}>
               <label>Check-out</label>
-              <input type="date" className="form-control" value={checkOut} onChange={e => setCheckOut(e.target.value)} required />
+              <input type="date" className="form-control" min={checkIn || new Date().toISOString().split('T')[0]} value={checkOut} onChange={e => setCheckOut(e.target.value)} required />
             </div>
             <div className="form-group" style={{ flex: 1, marginBottom: 0 }}>
               <label>Room Type</label>

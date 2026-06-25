@@ -31,9 +31,13 @@ const Payment = () => {
         alert('Payment successful! Your room is booked.');
         navigate('/booked-rooms');
       } catch (err) {
-        console.log("Backend not running, mock success");
-        alert('Payment processed (Mock). Navigating to booked rooms.');
-        navigate('/booked-rooms');
+        if (err.response) {
+          alert('Error: ' + (err.response.data.message || err.response.data.error || 'Failed to process payment'));
+        } else {
+          console.log("Backend not running, mock success");
+          alert('Payment processed (Mock). Navigating to booked rooms.');
+          navigate('/booked-rooms');
+        }
       } finally {
         setLoading(false);
       }
