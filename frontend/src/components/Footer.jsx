@@ -42,23 +42,23 @@ const Footer = () => {
             <div className="footer-links">
               <h4>QUICK LINKS</h4>
               <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#rooms">Rooms & Suites</a></li>
-                <li><a href="#amenities">Amenities</a></li>
-                <li><a href="#gallery">Gallery</a></li>
-                <li><a href="#reviews">Guest Reviews</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/#about">About Us</a></li>
+                <li><a href="/#rooms">Rooms & Suites</a></li>
+                <li><a href="/#amenities">Amenities</a></li>
+                <li><a href="/#gallery">Gallery</a></li>
+                <li><a href="/#reviews">Guest Reviews</a></li>
               </ul>
             </div>
             <div className="footer-links">
               <h4>SERVICES</h4>
               <ul>
-                <li><a href="#rooms">Room Reservation</a></li>
-                <li><a href="#">Spa Booking</a></li>
-                <li><a href="#">Fine Dining</a></li>
-                <li><a href="#">Event Spaces</a></li>
-                <li><a href="#">Business Center</a></li>
-                <li><a href="#">Concierge</a></li>
+                <li><a href="/#rooms">Room Reservation</a></li>
+                <li><a href="/#spa">Spa Booking</a></li>
+                <li><a href="/#dining">Fine Dining</a></li>
+                <li><a href="/#events">Event Spaces</a></li>
+                <li><a href="/#business">Business Center</a></li>
+                <li><a href="/#concierge">Concierge</a></li>
               </ul>
             </div>
             <div className="footer-links">
