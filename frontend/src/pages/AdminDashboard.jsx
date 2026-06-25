@@ -2195,25 +2195,34 @@ const AdminDashboard = () => {
         borderRight: '1px solid rgba(255,255,255,0.05)',
         boxShadow: '4px 0 10px rgba(0,0,0,0.05)'
       }}>
-        {/* Brand */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '35px', padding: '0 10px' }}>
-          <div style={{
-            backgroundColor: '#D4AF37',
-            color: '#0F2040',
-            width: '32px',
-            height: '32px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            fontFamily: 'Playfair Display, serif',
-            fontSize: '20px',
-            fontWeight: 'bold',
-            borderRadius: '4px'
-          }}>A</div>
-          <div>
-            <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '18px', letterSpacing: '1px', fontWeight: 'bold', color: '#fff', lineHeight: 1 }}>ATLAS</div>
-            <div style={{ fontSize: '8px', letterSpacing: '1px', color: '#A0AEC0', marginTop: '2px', fontWeight: 600 }}>ADMIN PANEL</div>
+        {/* Brand & Mobile Close */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '35px', padding: '0 10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{
+              backgroundColor: '#D4AF37',
+              color: '#0F2040',
+              width: '32px',
+              height: '32px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              fontFamily: 'Playfair Display, serif',
+              fontSize: '20px',
+              fontWeight: 'bold',
+              borderRadius: '4px'
+            }}>A</div>
+            <div>
+              <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '18px', letterSpacing: '1px', fontWeight: 'bold', color: '#fff', lineHeight: 1 }}>ATLAS</div>
+              <div style={{ fontSize: '8px', letterSpacing: '1px', color: '#A0AEC0', marginTop: '2px', fontWeight: 600 }}>ADMIN PANEL</div>
+            </div>
           </div>
+          <button 
+            className="mobile-menu-btn"
+            onClick={() => setIsMobileMenuOpen(false)}
+            style={{ background: 'transparent', border: 'none', color: '#fff', padding: 0, cursor: 'pointer' }}
+          >
+            <X size={24} />
+          </button>
         </div>
 
         {/* Navigations Groups */}
