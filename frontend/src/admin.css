@@ -1,0 +1,82 @@
+/* admin.css */
+
+/* Layout Base */
+.admin-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+}
+
+.admin-sidebar {
+  transition: transform 0.3s ease;
+}
+
+.admin-charts-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+}
+
+.mobile-menu-btn {
+  display: none !important;
+}
+
+/* Responsive Overrides */
+@media (max-width: 1024px) {
+  .admin-charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-layout {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 260px;
+    z-index: 1000;
+    transform: translateX(-100%);
+    box-shadow: 4px 0 15px rgba(0,0,0,0.5) !important;
+  }
+
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .mobile-menu-btn {
+    display: flex !important;
+  }
+
+  .header-date {
+    display: none !important;
+  }
+
+  /* Make tables responsive */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  /* Adjust padding for mobile main content */
+  main {
+    padding: 15px !important;
+  }
+  
+  header {
+    padding: 15px 20px !important;
+  }
+}
+
+/* Modals responsiveness */
+@media (max-width: 600px) {
+  .admin-modal {
+    width: 95% !important;
+    padding: 20px !important;
+    margin: 10px !important;
+  }
+}

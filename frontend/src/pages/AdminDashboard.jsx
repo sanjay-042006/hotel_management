@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './admin.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -6,11 +7,12 @@ import {
   Plus, Users, User, Calendar, CheckSquare, Settings, Star, AlertTriangle, 
   AlertCircle, LogOut, Check, X, Award, FileText, ChevronRight, RefreshCw, 
   BarChart2, DollarSign, Bed, CheckCircle, UserCheck, Shield, ChevronLeft,
-  UserMinus
+  UserMinus, Menu
 } from 'lucide-react';
 
 const AdminDashboard = () => {
   const [currentTab, setCurrentTab] = useState('dashboard');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [adminUser, setAdminUser] = useState('');
   const [adminRole, setAdminRole] = useState('Super Admin');
   const [stats, setStats] = useState(null);
@@ -537,9 +539,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Charts & Status Breakdown Section */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1.5fr 1fr',
+        <div className="admin-charts-grid" style={{
           gap: '30px',
           alignItems: 'start'
         }}>
@@ -2151,6 +2151,7 @@ const AdminDashboard = () => {
         onClick={() => {
           setCurrentTab(tabName);
           setError('');
+          setIsMobileMenuOpen(false);
         }}
         style={{
           display: 'flex',
@@ -2180,15 +2181,13 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: '260px 1fr',
+    <div className="admin-layout" style={{
       minHeight: '100vh',
       backgroundColor: '#F8F9FA',
       fontFamily: 'Inter, sans-serif'
     }}>
       {/* Sidebar (Dark) */}
-      <aside style={{
+      <aside className={`admin-sidebar ${isMobileMenuOpen ? 'open' : ''}`} style={{
         backgroundColor: '#0F2040',
         padding: '25px 15px',
         display: 'flex',
@@ -2266,10 +2265,19 @@ const AdminDashboard = () => {
           alignItems: 'center',
           boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
         }}>
-          {/* Current Date Display */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#718096', fontSize: '13px', fontWeight: 600 }}>
-            <Calendar size={15} />
-            <span>{new Date().toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</span>
+          {/* Mobile Menu & Current Date */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <button 
+              className="mobile-menu-btn"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              style={{ background: 'transparent', border: 'none', color: '#0F2040', cursor: 'pointer', padding: 0 }}
+            >
+              <Menu size={24} />
+            </button>
+            <div className="header-date" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#718096', fontSize: '13px', fontWeight: 600 }}>
+              <Calendar size={15} />
+              <span>{new Date().toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</span>
+            </div>
           </div>
 
           {/* Profile & Logout */}

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ChevronLeft } from 'lucide-react';
+import './admin.css';
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
@@ -53,15 +55,35 @@ const AdminLogin = () => {
       padding: '20px',
       fontFamily: 'Inter, sans-serif'
     }}>
-      <div className="admin-login-card" style={{
+      <div className="admin-login-card admin-modal" style={{
         backgroundColor: '#FFFFFF',
         borderRadius: '16px',
         boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
         width: '100%',
         maxWidth: '480px',
         padding: '50px 40px',
-        textAlign: 'center'
+        textAlign: 'center',
+        position: 'relative'
       }}>
+        <button 
+          onClick={() => navigate('/')}
+          style={{
+            position: 'absolute',
+            top: '20px',
+            left: '20px',
+            background: 'transparent',
+            border: 'none',
+            color: '#718096',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            cursor: 'pointer',
+            fontSize: '13px',
+            fontWeight: 600
+          }}
+        >
+          <ChevronLeft size={16} /> Back
+        </button>
         {/* Brand Logo */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginBottom: '30px' }}>
           <div style={{
