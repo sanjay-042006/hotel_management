@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
-import './admin.css';
+import '../admin.css';
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
