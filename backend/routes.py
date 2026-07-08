@@ -387,6 +387,42 @@ def admin_amenity_detail(current_admin, amenity_id):
         db.session.commit()
         return jsonify({'message': 'Amenity deleted successfully'}), 200
 
+# ----------------- AVAILABILITY -----------------
+
+@api_bp.route('/availability', methods=['POST'])
+def check_availability():
+    data = request.json
+    check_in = data.get('check_in')
+    check_out = data.get('check_out')
+    
+    rooms = Room.query.all()
+    availability_data = []
+    
+    for room in rooms:
+        if not check_in or not check_out:
+            available = room.total_quantity
+        else:
+            overlapping_bookings = Booking.query.filter(
+                Booking.room_id == room.id,
+                Booking.check_in < check_out,
+                Booking.check_out > check_in,
+                Booking.status != 'Cancelled'
+            ).count()
+            available = max(0, room.total_quantity - overlapping_bookings)
+            
+        availability_data.append({
+            'room_id': room.id,
+            'room_name': room.name,
+            'price_per_night': room.price_per_night,
+            'total_quantity': room.total_quantity,
+            'available': available,
+            'description': room.description,
+            'image_url': room.image_url,
+            'features': room.features
+        })
+        
+    return jsonify(availability_data), 200
+
 # ----------------- BOOKINGS CRUD -----------------
 
 @api_bp.route('/bookings', methods=['POST'])
